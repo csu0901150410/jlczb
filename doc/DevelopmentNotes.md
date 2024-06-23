@@ -1,0 +1,1 @@
+使用库[PyGerber](https://pypi.org/project/pygerber/)，参考[gerber层格式规格](https://www.ucamco.com/files/downloads/file_en/456/gerber-layer-format-specification-revision-2023-03_en.pdf)。

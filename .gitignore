@@ -8,3 +8,5 @@ res/
 
 # 不能忽略的文件夹
 !lhy/res/
+
+**/__pycache__/

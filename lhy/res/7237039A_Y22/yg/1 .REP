@@ -1,0 +1,157 @@
+*************************************************************
+FileName = 1 .GBR
+AutoAperture = True
+*************************************************************
+Generating : Solder Mask Bottom
+      File : 1 .GBS
+
+    Adding Layer      : Solder Mask Bottom
+
+    Adding Layer      : Bottom
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Solder Mask Top
+      File : 1 .GTS
+
+    Adding Layer      : Solder Mask Top
+
+    Adding Layer      : Top
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D15
+*************************************************************
+
+*************************************************************
+Generating : Paste Mask Top
+      File : 1 .GTP
+
+    Adding Layer      : Paste Mask Top
+
+    Adding Layer      : Top
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D13
+*************************************************************
+
+*************************************************************
+Generating : Silkscreen Top
+      File : 1 .GTO
+
+    Adding Layer      : Silkscreen Top
+
+
+Used DCodes :
+    D10
+    D11
+*************************************************************
+
+*************************************************************
+Generating : Top Pad Master
+      File : 1 .GPT
+
+    Adding Layer      : Top
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D13
+*************************************************************
+
+*************************************************************
+Generating : Bottom
+      File : 1 .GBL
+
+    Adding Layer      : Bottom
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D16
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Keep-Out Layer
+      File : 1 .GKO
+
+    Adding Layer      : Keep-Out Layer
+
+
+Used DCodes :
+    D10
+*************************************************************
+
+*************************************************************
+Generating : Silkscreen Bottom
+      File : 1 .GBO
+
+    Adding Layer      : Silkscreen Bottom
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Top
+      File : 1 .GTL
+
+    Adding Layer      : Top
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D13
+    D16
+    D17
+    D18
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Drill Drawing
+      File : 1 .GD1
+
+    Adding Drill Pair : Top-Bottom
+
+    Adding Layer      : Drill Drawing
+
+
+Used DCodes :
+    D20
+    D21
+    D22
+    D23
+*************************************************************
+
+*************************************************************
+Generating : Drill Guide
+      File : 1 .GG1
+
+    Adding Drill Pair : Top-Bottom
+
+    Adding Layer      : Drill Guide
+
+
+Used DCodes :
+    D22
+*************************************************************
+

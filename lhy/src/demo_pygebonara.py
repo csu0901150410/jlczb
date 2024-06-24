@@ -5,7 +5,7 @@ from gerbonara.utils import *
 
 from pyjlccam import *
 
-gerber_files_path = "../../res/7237039A_Y22/yg"
+gerber_files_path = "../res/7237039A_Y22/yg"
 filepath = "{0}/1 .GTL".format(gerber_files_path)
 
 # 打印gerber中的图元

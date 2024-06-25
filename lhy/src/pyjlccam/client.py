@@ -50,7 +50,7 @@ class socket_client:
         dict["arg"]  = paramdict
         
         jsonData = json.dumps(dict, ensure_ascii=False)
-        #print('call api-'+jsonData)
+        # print('call api-'+jsonData)
         self.send(jsonData+'!script_message_end')
         retstr = self._recv()
         ret=json.loads(retstr)

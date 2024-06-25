@@ -2,6 +2,7 @@
 
 from enum import Enum
 from .client import socket_client
+import utils as utils
 
 # 层类型枚举
 class LayerType(Enum):
@@ -200,5 +201,27 @@ class JlccamJob:
 		}
 
 		ret = self.call_script("script_add_pad", param)
+		return ret
+	
+	def import_tgz(self, tgz_path):
+		param = {}
+		param["tgz"] = tgz_path
+		param["step"] = []
+		param["layer"] = []
+		param["prefix"] = ""
+		ret = self.call_script("script_import_tgz", param)
+		return ret
+	
+	def import_ddw(self, ddw_path):
+		ret = self.call_script("script_open_ddw", utils.path_rel2abs(ddw_path))
+		return ret
+	
+	def import_gerbers(self, gerber_path, jobname, stepname : str = "orig", repeat_aperture : bool = False):
+		param = {}
+		param["jobname"] = gerber_path
+		param["path"] = jobname
+		param["step"] = stepname
+		param["repeat_aperture"] = repeat_aperture
+		ret = self.call_script("script_import_gerber_dir", param)
 		return ret
 

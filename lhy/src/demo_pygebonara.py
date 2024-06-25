@@ -5,8 +5,7 @@ from gerbonara.utils import *
 
 from pyjlccam import *
 
-gerber_files_path = "../res/7237039A_Y22/yg"
-filepath = "{0}/1 .GTL".format(gerber_files_path)
+import argparse
 
 # 打印gerber中的图元
 flashs = []
@@ -14,12 +13,9 @@ lines = []
 arcs = []
 regions = []
 
-def inch_2_mm(value):
-	return convert(value, Inch, MM)
-
-def read_gerber():
+def read_gerber(filename):
 	# 读取单个gerber
-	gerber_file = GerberFile.open(filepath)
+	gerber_file = GerberFile.open(filename)
 	print(gerber_file)
 
 	for obj in gerber_file.objects:
@@ -92,7 +88,27 @@ def main(jlccam):
 
 if __name__ == "__main__":
 
-	read_gerber()
+	# parser = argparse.ArgumentParser(description="Script read gerber file")
 
-	jlccam = JlccamClient("127.0.0.1", 4066)
-	main(jlccam)
+	# parser.add_argument("-i", "--input", help="input gerber file", default="")
+
+	# args = parser.parse_args()
+
+	# filename = args.input
+
+	ddw_path = "../res/7237039A_Y22/ok/7237039a_y7.ddw"
+
+	if len(ddw_path) != 0:
+		jlccam = JlccamClient("127.0.0.1", 4066)
+
+		jobname = "7237039a_y7"
+		if jlccam.check_job_exists(jobname):
+			jlccam.open_job(jobname)
+		else:
+			jlccam.new_job(jobname)
+			jlccam.open_job(jobname)
+
+		# 创建料号客户端
+		jobinfo = jlccam.get_jobinfo_by_jobname(jobname)
+		job = JlccamJob("127.0.0.1", jobinfo.port)
+		job.import_ddw(ddw_path)

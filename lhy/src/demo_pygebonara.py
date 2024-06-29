@@ -112,3 +112,19 @@ if __name__ == "__main__":
 		jobinfo = jlccam.get_jobinfo_by_jobname(jobname)
 		job = JlccamJob("127.0.0.1", jobinfo.port)
 		job.import_ddw(ddw_path)
+
+		ret = job.save()
+		print(ret)
+
+		path = os.path.dirname(ddw_path)
+		steps = job.get_steps()
+		layers = job.get_layers()
+
+		for step in steps:
+			step_path = os.path.join(path, step)
+			print(step)
+			ret = job.autosort_layer(step)
+			print(ret)
+
+			ret = job.export_gerber(step_path, step, layers)
+			print(ret)

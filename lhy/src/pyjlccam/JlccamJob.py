@@ -1,35 +1,8 @@
 #coding=utf-8
 
-from enum import Enum
 from .client import socket_client
 import utils as utils
-
-# 层类型枚举
-class LayerType(Enum):
-	SIGNAL = "signal"
-	POWER_GROUND = "power_ground"
-	MIXED = "mixed"
-	SOLDER_MASK = "solder_mask"
-	SILK_SCREEN = "silk_screen"
-	SOLDER_PASTE = "solder_paste"
-	DRILL = "drill"
-	ROUT = "rout"
-	DOCUMENT = "document"
-	COMPONENT = "component"
-	MASK = "mask"
-	COND_PASTE = "cond_paste"
-	COVERLAY = "coverlay"
-	PI_STIFFENER = "pi_stifener"
-	GP_STIFFENER = "gp_stiffener"
-	FR4_STIFFENER = "fr4_stiffener"
-	PS_STIFFENER = "3m_stiffener"
-	ESCOAT = "escoat"
-	DRAWING = "drawing"
-
-# 极性枚举
-class Polarity(Enum):
-	POSITIVE = True
-	NEGATIVE = False
+from .JlccamLayer import *
 
 class JlccamJobInfo:
 	"""料号信息类。记录料号名称、进程id、通信端口号
@@ -73,6 +46,10 @@ class JlccamJob:
 		self.client.send_command("script_quit_app")
 		self.client.stop()
 
+	def save(self):
+		ret = self.call_script("script_save")
+		return ret
+
 	def add_step(self, stepname : str):
 		ret = self.call_script("script_add_step", stepname)
 		return ret
@@ -99,6 +76,27 @@ class JlccamJob:
 
 		ret = self.call_script("script_step_rename", param)
 		return ret
+	
+	def get_layers(self):
+		ret = self.call_script("script_get_layers")
+		ret = ret["result"]
+		# print(ret)
+		layers = []
+		for item in ret:
+			context = item["context"]
+			layername = item["layername"]
+			polarity = item["polarity"]
+			start = item["start"]
+			end = item["end"]
+			order = item["order"]
+			layertype = item["layertype"]
+			layer = JlccamLayer(context, layername, polarity, order, layertype, start, end)
+			layers.append(layer)
+		return layers
+	
+	def get_steps(self):
+		ret = self.call_script("script_get_steps")
+		return ret["result"]
 	
 	def set_work_layer(self, stepname : str, layername : str):
 		param = {
@@ -223,5 +221,66 @@ class JlccamJob:
 		param["step"] = stepname
 		param["repeat_aperture"] = repeat_aperture
 		ret = self.call_script("script_import_gerber_dir", param)
+		return ret
+	
+	def export_gerber(self, path, step, layers):
+
+		params = {}
+		params["path"] = utils.path_rel2abs(path)
+		params["step"] = step
+		params["prefix"] = ""
+		params["suffix"] = ""
+		params["check"] = False
+		params["allow_zerosymbol"] = True
+		params["inherit_taillstep"] = False
+		params["format"] = {
+			"breakrepeat" : True,
+			"format" : "2:5",
+			"lzero" : "lz",
+			"surfaceraster" : True,
+			"filmminbus" : 1,
+			"unit" : "inch",
+			"drillrepeat" : True,
+			"drillbreaktext" : True,
+			"drilloptpath" : True,
+			"drilljump" : False,
+			"drilljumpholedis" : 0.8,
+			"drlformat" : "3:3",
+			"drillsortbyscript" : True,
+			"drllzero" : "tz",
+			"drlunit" : "mm",
+			"routrepeat" : False,
+			"routformat" : "3:3",
+			"routlzero" : "tz",
+			"routunit" : "mm"
+		}
+
+		jslayers = []
+		for layer in layers:
+			# print(layer)
+			layercontext = layer.context
+			layername = layer.name
+			layertype = layer.type
+			jsl = {
+				"centerx" : 0.0,
+				"centery" : 0.0,
+				"layercontext" : layercontext,
+				"layername" : layername,
+				"layertype" : layertype,
+				"outname" : layername,
+				"outtype" : layertype,
+				"formatString" : "",
+				"scalex" : 1.0,
+				"scaley" : 1.0,
+				"offsetx" : 0.0,
+				"offsety" : 0.0,
+				"angle" : 90,
+				"mirr" : 0
+			}
+			jslayers.append(jsl)
+
+		params["layers"] = jslayers
+
+		ret = self.call_script("script_export_gerber", params)
 		return ret
 

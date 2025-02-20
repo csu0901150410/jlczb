@@ -60,6 +60,19 @@ class JlccamClient:
 
 		return dir
 	
+
+	# 获取work目录下全部的料号名
+	def get_job_list(self):
+		workdir = self.get_work_directory()
+		job_list = []
+		for root, dirs, files in os.walk(workdir):
+			for file in files:
+				if file.endswith(".ddw"):
+					job_list.append(file[:-4])
+		return job_list
+
+
+	
 	# 获取临时文件目录(嘉立创CAM临时缓存目录)
 	def get_temp_directory(self):
 		ret = self.client.send_command("script_get_tmp_directory")
@@ -87,6 +100,15 @@ class JlccamClient:
 		work_dir = self.get_work_directory()
 		for root, dirs, files in os.walk(work_dir):
 			if filename in files:
+				return True
+		return False
+	
+
+	# 检查料号是否已打开
+	def check_job_open(self, jobname):
+		infos = self.get_all_open_jobinfo()
+		for info in infos:
+			if jobname == info.jobname:
 				return True
 		return False
 
